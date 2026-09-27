@@ -24,8 +24,8 @@ print("Loading Transformer model...")
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    torch_dtype="auto",
-    device_map="auto"
+    torch_dtype=torch.float32,
+    device_map="cpu"
 )
 
 print("Model loaded successfully!")
@@ -112,7 +112,7 @@ and help users understand concepts rather than simply giving answers.
 
         output_ids = model.generate(
             **inputs,
-            max_new_tokens=300,
+            max_new_tokens=100,
             temperature=0.7,
             top_p=0.9,
             do_sample=True,
