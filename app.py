@@ -1,12 +1,13 @@
-import torch
 import gradio as gr
-
+import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+
 # ==========================================
 # 1. MODEL
 # ==========================================
 
 MODEL_NAME = "Qwen/Qwen2.5-0.5B-Instruct"
+
 # ==========================================
 # 2. TOKENIZER
 # ==========================================
@@ -16,6 +17,7 @@ print("Loading tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(
     MODEL_NAME
 )
+
 # ==========================================
 # 3. TRANSFORMER MODEL
 # ==========================================
@@ -29,15 +31,12 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 print("Model loaded successfully!")
+
 # ==========================================
 # 4. CHATBOT FUNCTION
 # ==========================================
 
 def chatbot(message, history):
-
-    # ------------------------------
-    # System instructions
-    # ------------------------------
 
     messages = [
         {
@@ -60,32 +59,17 @@ and help users understand concepts rather than simply giving answers.
         }
     ]
 
-    # ------------------------------
-    # Add previous conversation
-    # ------------------------------
-
     for chat in history:
-
         if chat["role"] in ["user", "assistant"]:
-
             messages.append({
                 "role": chat["role"],
                 "content": chat["content"]
             })
 
-    # ------------------------------
-    # Add current user message
-    # ------------------------------
-
     messages.append({
         "role": "user",
         "content": message
     })
-
-    # ==========================================
-    # PHASE 1
-    # CHAT TEMPLATE / TOKENIZATION PREPARATION
-    # ==========================================
 
     prompt = tokenizer.apply_chat_template(
         messages,
@@ -93,23 +77,12 @@ and help users understand concepts rather than simply giving answers.
         add_generation_prompt=True
     )
 
-    # ==========================================
-    # PHASE 2
-    # TEXT → TOKEN IDs
-    # ==========================================
-
     inputs = tokenizer(
         prompt,
         return_tensors="pt"
     ).to(model.device)
 
-    # ==========================================
-    # PHASE 3 + PHASE 4
-    # TRANSFORMER + NEXT TOKEN PREDICTION
-    # ==========================================
-
     with torch.no_grad():
-
         output_ids = model.generate(
             **inputs,
             max_new_tokens=100,
@@ -119,19 +92,10 @@ and help users understand concepts rather than simply giving answers.
             repetition_penalty=1.1
         )
 
-    # ==========================================
-    # GET ONLY NEW TOKENS
-    # ==========================================
-
     new_tokens = output_ids[
         0,
         inputs["input_ids"].shape[1]:
     ]
-
-    # ==========================================
-    # PHASE 5
-    # TOKEN IDs → HUMAN TEXT
-    # ==========================================
 
     response = tokenizer.decode(
         new_tokens,
@@ -139,7 +103,8 @@ and help users understand concepts rather than simply giving answers.
     )
 
     return response
-  # ==========================================
+
+# ==========================================
 # 5. GRADIO USER INTERFACE
 # ==========================================
 
@@ -147,7 +112,7 @@ demo = gr.ChatInterface(
 
     fn=chatbot,
 
-    title=" AI & ML Learning Assistant",
+    title="AI & ML Learning Assistant",
 
     description="""
     An interactive learning assistant powered by a
@@ -168,6 +133,7 @@ demo = gr.ChatInterface(
 
     save_history=True
 )
+
 # ==========================================
 # 6. START APPLICATION
 # ==========================================
