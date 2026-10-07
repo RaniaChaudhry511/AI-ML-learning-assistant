@@ -7,6 +7,7 @@ The project shows how a pre-trained Transformer language model can be placed ins
 This project is a Google Colab notebook. It is not deployed as a hosted app.
 
 Features
+
 Simple, beginner-friendly explanations with examples
 Step-by-step breakdown of difficult concepts
 Conceptual comparisons (e.g. CNN vs RNN)
@@ -20,6 +21,7 @@ Libraries: PyTorch, Hugging Face Transformers, Gradio
 Platform: Google Colab
 
 How It Works
+
 The tokenizer and model are loaded from the Hugging Face Hub.
 A system prompt (AI/ML tutor), the chat history and the new message are combined using the model's chat template.
 The text is converted into token IDs.
@@ -35,6 +37,7 @@ Run all cells.
 Open the Gradio link printed in the output (public share links last about one week).
 
 Example Questions
+
 Explain NLP in simple words.
 What is supervised learning?
 Explain how a Transformer works.
@@ -43,6 +46,7 @@ What is overfitting and how can we prevent it?
 Explain Generative AI with an example.
 
 Limitations
+
 The model is small (0.5B parameters), so answers can be incomplete or wrong.
 It has no internet access, so it cannot look up recent information.
 The topic focus comes from the system prompt only, so off-topic questions may still get answers.
@@ -53,4 +57,5 @@ Fine-tune on AI/ML Q&A data (LoRA/QLoRA)
 Deploy as a permanent app (e.g. Hugging Face Spaces)
 
 Author
+
 Rania Chaudhry
